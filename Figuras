@@ -1,0 +1,203 @@
+import java.util.Scanner;
+
+abstract class Figura {
+    abstract double calcularArea();
+    abstract double calcularPerimetro();
+}
+
+class Triangulo extends Figura {
+    private Punto punto1;
+    private Punto punto2;
+    private Punto punto3;
+
+    public Triangulo(Punto punto1, Punto punto2, Punto punto3) {
+        this.punto1 = punto1;
+        this.punto2 = punto2;
+        this.punto3 = punto3;
+    }
+
+    @Override
+    double calcularArea() {
+        double base = punto2.calcularDistancia(punto3);
+        double altura = punto1.calcularDistancia(punto2);
+
+        return (base * altura) / 2;
+    }
+
+    @Override
+    double calcularPerimetro() {
+        double lado1 = punto1.calcularDistancia(punto2);
+        double lado2 = punto2.calcularDistancia(punto3);
+        double lado3 = punto3.calcularDistancia(punto1);
+
+        return lado1 + lado2 + lado3;
+    }
+}
+
+class Cuadrado extends Figura {
+    private Punto punto1;
+    private Punto punto2;
+    private Punto punto3;
+    private Punto punto4;
+
+    public Cuadrado(Punto punto1, Punto punto2, Punto punto3, Punto punto4) {
+        this.punto1 = punto1;
+        this.punto2 = punto2;
+        this.punto3 = punto3;
+        this.punto4 = punto4;
+    }
+
+    @Override
+    double calcularArea() {
+        double lado = punto1.calcularDistancia(punto2);
+
+        return lado * lado;
+    }
+
+    @Override
+    double calcularPerimetro() {
+        double lado = punto1.calcularDistancia(punto2);
+
+        return 4 * lado;
+    }
+}
+
+class Circulo extends Figura {
+    private Punto centro;
+    private double radio;
+
+    public Circulo(Punto centro, double radio) {
+        this.centro = centro;
+        this.radio = radio;
+    }
+
+    @Override
+    double calcularArea() {
+        return Math.PI * radio * radio;
+    }
+
+    @Override
+    double calcularPerimetro() {
+        return 2 * Math.PI * radio;
+    }
+}
+
+class Punto {
+    private double x;
+    private double y;
+
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double calcularDistancia(Punto otroPunto) {
+        double dx = x - otroPunto.x;
+        double dy = y - otroPunto.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+
+public class ProgramaFiguras {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Seleccione una figura geométrica:");
+        System.out.println("1. Triángulo");
+        System.out.println("2. Cuadrado");
+        System.out.println("3. Círculo");
+        int opcionFigura = scanner.nextInt();
+
+        Figura figura;
+        switch (opcionFigura) {
+            case 1:
+                figura = crearTriangulo(scanner);
+                break;
+            case 2:
+                figura = crearCuadrado(scanner);
+                break;
+            case 3:
+                figura = crearCirculo(scanner);
+                break;
+            default:
+                System.out.println("Opción inválida. Saliendo del programa.");
+                return;
+        }
+
+        System.out.println("Seleccione qué desea calcular:");
+        System.out.println("1. Área");
+        System.out.println("2. Perímetro");
+        int opcionCalculo = scanner.nextInt();
+
+        double resultado;
+        switch (opcionCalculo) {
+            case 1:
+                resultado = figura.calcularArea();
+                System.out.println("El área de la figura es: " + resultado);
+                break;
+            case 2:
+                resultado = figura.calcularPerimetro();
+                System.out.println("El perímetro de la figura es: " + resultado);
+                break;
+            default:
+                System.out.println("Opción inválida. Saliendo del programa.");
+                return;
+        }
+    }
+
+    private static Triangulo crearTriangulo(Scanner scanner) {
+        System.out.println("Ingrese las coordenadas del punto 1 (x y):");
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        Punto punto1 = new Punto(x1, y1);
+
+        System.out.println("Ingrese las coordenadas del punto 2 (x y):");
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        Punto punto2 = new Punto(x2, y2);
+
+        System.out.println("Ingrese las coordenadas del punto 3 (x y):");
+        double x3 = scanner.nextDouble();
+        double y3 = scanner.nextDouble();
+        Punto punto3 = new Punto(x3, y3);
+
+        return new Triangulo(punto1, punto2, punto3);
+    }
+
+    private static Cuadrado crearCuadrado(Scanner scanner) {
+        System.out.println("Ingrese las coordenadas del punto 1 (x y):");
+        double x1 = scanner.nextDouble();
+        double y1 = scanner.nextDouble();
+        Punto punto1 = new Punto(x1, y1);
+
+        System.out.println("Ingrese las coordenadas del punto 2 (x y):");
+        double x2 = scanner.nextDouble();
+        double y2 = scanner.nextDouble();
+        Punto punto2 = new Punto(x2, y2);
+
+        System.out.println("Ingrese las coordenadas del punto 3 (x y):");
+        double x3 = scanner.nextDouble();
+        double y3 = scanner.nextDouble();
+        Punto punto3 = new Punto(x3, y3);
+
+        System.out.println("Ingrese las coordenadas del punto 4 (x y):");
+        double x4 = scanner.nextDouble();
+        double y4 = scanner.nextDouble();
+        Punto punto4 = new Punto(x4, y4);
+
+        return new Cuadrado(punto1, punto2, punto3, punto4);
+    }
+
+    private static Circulo crearCirculo(Scanner scanner) {
+        System.out.println("Ingrese las coordenadas del centro del círculo (x y):");
+        double x = scanner.nextDouble();
+        double y = scanner.nextDouble();
+        Punto centro = new Punto(x, y);
+
+        System.out.println("Ingrese el radio del círculo:");
+        double radio = scanner.nextDouble();
+
+        return new Circulo(centro, radio);
+    }
+}
